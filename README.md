@@ -3,8 +3,6 @@
 Dieses Projekt ist eine vollständig interaktive Umsetzung von **Conway’s Game of Life** in Python.  
 Es kombiniert eine performante Simulation mit einer modular aufgebauten Benutzeroberfläche, die es ermöglicht, Parameter live oder nach einem Reset anzupassen.
 
-Die Anwendung wurde mit Fokus auf **Modularität**, **Wiederverwendbarkeit** und **klare UI‑Strukturen** entwickelt.
-
 ---
 
 ## 🚀 Features
@@ -23,15 +21,14 @@ Die Anwendung wurde mit Fokus auf **Modularität**, **Wiederverwendbarkeit** und
   - Simulationsgeschwindigkeit (wirkt sofort)
   - Zellfarbe (wirkt sofort)
 - **Buttons** für:
-  - Start/Pause
   - Reset
-  - Öffnen/Schließen des Settings‑Overlays
-- **Overlay‑Fenster** mit Bestätigungsdialogen (z. B. Reset‑Confirmation)
+  - Spiel schließen
+  - Spiel nicht schließen
 - Hover‑ und Click‑Effekte für Buttons
 
 ### 🧩 Architektur
 - Modularer Aufbau:
-  - Eigene Klassen für Buttons, Slider und Overlays
+  - Eigene Klassen für Buttons und Slider
   - Saubere Trennung von UI‑Logik und Simulationslogik
   - Wiederverwendbare Komponenten für zukünftige Projekte
 
@@ -64,6 +61,13 @@ python main.py
 | Aktion | Beschreibung |
 |----------|----------|
 | Leertaste   | Simulation starten/pausieren   |
+| Rechte Pfeiltaste   | Zur nächsten Generation springen (wenn pausiert ist)  |
 | R   | Simulation zurücksetzen   |
-| E   | Einstellungsfenster öffnen   |
-| Slider bewegen   | Parameter anpassen (live oder nach Reset)  |
+| E   | Settings‑Overlay öffnen   |
+| ESC   | Spiel schließen (mit Bestätigung)  |
+
+---
+
+## 📄 Lizenz
+
+MIT License – frei nutzbar für eigene Projekte.

@@ -1,1 +1,69 @@
-# GameOfLife
+# 🧬 Game of Life – Python Implementation mit interaktivem UI
+
+Dieses Projekt ist eine vollständig interaktive Umsetzung von **Conway’s Game of Life** in Python.  
+Es kombiniert eine performante Simulation mit einer modular aufgebauten Benutzeroberfläche, die es ermöglicht, Parameter live oder nach einem Reset anzupassen.
+
+Die Anwendung wurde mit Fokus auf **Modularität**, **Wiederverwendbarkeit** und **klare UI‑Strukturen** entwickelt.
+
+---
+
+## 🚀 Features
+
+### 🟩 Simulation
+- Klassische Regeln des Game of Life  
+- Performante Grid‑Berechnung  
+- Pause/Resume‑Funktion  
+- Reset der Simulation mit neuen Parametern  
+- Zufällige Startpopulation basierend auf Spawn‑Rate
+
+### 🎛️ Interaktive UI
+- **Slider** für:
+  - Zellgröße (wirkt nach Reset)
+  - Spawn‑Rate (wirkt nach Reset)
+  - Simulationsgeschwindigkeit (wirkt sofort)
+  - Zellfarbe (wirkt sofort)
+- **Buttons** für:
+  - Start/Pause
+  - Reset
+  - Öffnen/Schließen des Settings‑Overlays
+- **Overlay‑Fenster** mit Bestätigungsdialogen (z. B. Reset‑Confirmation)
+- Hover‑ und Click‑Effekte für Buttons
+
+### 🧩 Architektur
+- Modularer Aufbau:
+  - Eigene Klassen für Buttons, Slider und Overlays
+  - Saubere Trennung von UI‑Logik und Simulationslogik
+  - Wiederverwendbare Komponenten für zukünftige Projekte
+
+---
+
+## 📦 Installation
+
+### Voraussetzungen
+- Python 3.10+
+- `pygame`
+
+Installation der Abhängigkeiten:
+
+```bash
+pip install pygame
+```
+
+---
+
+## ▶️ Starten der Anwendung
+
+```bash
+python main.py
+```
+
+---
+
+## ⚙️ Bedienung
+
+| Aktion | Beschreibung |
+|----------|----------|
+| Leertaste   | Simulation starten/pausieren   |
+| R   | Simulation zurücksetzen   |
+| E   | Einstellungsfenster öffnen   |
+| Slider bewegen   | Parameter anpassen (live oder nach Reset)  |

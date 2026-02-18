@@ -10,28 +10,38 @@ class Button:
         self.button_color = button_color
         self.text = text
         self.text_color = text_color
+        self.hover_effect = hover_effect
         self.button_font = pygame.font.SysFont(None, round((w+h)//4))
-        self.hover_color = tuple(min(x + 95, 255) for x in self.button_color)
+        self.button_font_hover = pygame.font.SysFont(None, round(((w+h)//4)+hover_effect))
+        self.hover_color = tuple(min(x + 80, 255) for x in self.button_color)
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.button_color, self.rect, border_radius=7)
-        if self.hover == True:
-            mx, my = pygame.mouse.get_pos()
-            if self.x <= mx <= self.x + self.w and self.y <= my <= self.y + self.h:
-                pygame.draw.rect(screen, self.hover_color, self.hover_rect, border_radius=7)
+        mx, my = pygame.mouse.get_pos()
+        hovering = self.rect.collidepoint(mx, my)
 
-        text = self.button_font.render(self.text, True, self.text_color)
-        screen.blit(text, (self.rect.x + (self.rect.width - text.get_width()) // 2,
-                           self.rect.y + (self.rect.height - text.get_height()) // 2))
+        # Button zeichnen in abhängikeit vom hovern
+        if hovering and self.hover:
+            pygame.draw.rect(screen, self.hover_color, self.hover_rect, border_radius=7)
+        else:
+            pygame.draw.rect(screen, self.button_color, self.rect, border_radius=7)
+
+        # Text im Button zeichnen in abhängikeit vom hovern
+        if hovering and self.hover:
+            text = self.button_font_hover.render(self.text, True, self.text_color)
+            screen.blit(text, (self.hover_rect.x + (self.hover_rect.width - text.get_width()) // 2,
+                               self.hover_rect.y + (self.hover_rect.height - text.get_height()) // 2))
+        else:
+            text = self.button_font.render(self.text, True, self.text_color)
+            screen.blit(text, (self.rect.x + (self.rect.width - text.get_width()) // 2,
+                            self.rect.y + (self.rect.height - text.get_height()) // 2))
         
-    def is_clicked(self):
+    def is_clicked(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             mx, my = pygame.mouse.get_pos()
             if self.x <= mx <= self.x + self.w and self.y <= my <= self.y + self.h:
                 return True
             else:
                 return False
-        
 
 class Slider:
     def __init__(self, x, y, w, h, min_val, max_val, start_val, color=(200,200,200)):
@@ -245,16 +255,16 @@ while running:
         # Wenn Bestätigungsfenster angezeigt wird
         if show_confirm:
             # Wenn der 'Ja' Button gedrückt wurde
-            if yes_button.is_clicked():
+            if yes_button.is_clicked(event):
                 running = False
             # Wenn der 'Nein' Button gedrückt wurde
-            if no_button.is_clicked():
+            if no_button.is_clicked(event):
                 show_confirm = False
 
         # Wenn Einstellungsfenster angezeigt wird
         if show_settings:
             # Wenn der Reset-Button gedrückt wird
-            if reset_button.is_clicked():
+            if reset_button.is_clicked(event):
                 # Werte zu den Werten der Slider anpassen
                 cell_size = pending_cell_size
                 spawn_rate = pending_spawn_rate

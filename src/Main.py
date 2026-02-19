@@ -311,6 +311,15 @@ while running:
 
         # Mit R-Taste die Simulation reseten
         if event.type == pygame.KEYDOWN and event.key == pygame.K_r and not show_confirm and not show_settings:
+            # Werte zu den Werten der Slider anpassen
+            cell_size = pending_cell_size
+            spawn_rate = pending_spawn_rate
+
+            # cols und rows neu berechnen, weil sich die cell_size geändert hat
+            cols = width // cell_size
+            rows = height // cell_size
+
+            # Neues grid erstellen
             grid = [[1 if random.random() <= spawn_rate else 0 for _ in range(rows)] for _ in range(cols)]
 
         # Mit Pfeiltaste nach rechts Generationen durchgehen

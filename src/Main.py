@@ -6,6 +6,7 @@ class Button:
         self.h = h
         self.rect = pygame.Rect(x, y, w, h)
         self.hover_rect = pygame.Rect(x-hover_effect, y-hover_effect, w+hover_effect*2, h+hover_effect*2)
+        self.clicked_rect = pygame.Rect(x+hover_effect, y+hover_effect, w-hover_effect*2, h-hover_effect*2)
         self.hover = hover
         self.button_color = button_color
         self.text = text
@@ -13,35 +14,57 @@ class Button:
         self.hover_effect = hover_effect
         self.button_font = pygame.font.SysFont(None, round((w+h)//4))
         self.button_font_hover = pygame.font.SysFont(None, round(((w+h)//4)+hover_effect))
+        self.button_font_clicked = pygame.font.SysFont(None, round(((w+h)//4)-hover_effect))
         self.hover_color = tuple(min(x + 80, 255) for x in self.button_color)
+        self.clicked_color = tuple(min(x + 80 - 30, 255) for x in self.button_color)
+        self.pressed = False
 
     def draw(self, screen):
         mx, my = pygame.mouse.get_pos()
         hovering = self.rect.collidepoint(mx, my)
 
-        # Button zeichnen in abhängikeit vom hovern
+        # --- PRESSED STATE ---
+        if self.pressed:
+            pygame.draw.rect(screen, self.clicked_color, self.rect, border_radius=7)
+            text = self.button_font.render(self.text, True, self.text_color)
+            screen.blit(text, (
+                self.rect.x + (self.rect.width - text.get_width()) // 2,
+                self.rect.y + (self.rect.height - text.get_height()) // 2
+            ))
+            return
+
+        # --- HOVER STATE ---
         if hovering and self.hover:
             pygame.draw.rect(screen, self.hover_color, self.hover_rect, border_radius=7)
-        else:
-            pygame.draw.rect(screen, self.button_color, self.rect, border_radius=7)
-
-        # Text im Button zeichnen in abhängikeit vom hovern
-        if hovering and self.hover:
             text = self.button_font_hover.render(self.text, True, self.text_color)
-            screen.blit(text, (self.hover_rect.x + (self.hover_rect.width - text.get_width()) // 2,
-                               self.hover_rect.y + (self.hover_rect.height - text.get_height()) // 2))
-        else:
-            text = self.button_font.render(self.text, True, self.text_color)
-            screen.blit(text, (self.rect.x + (self.rect.width - text.get_width()) // 2,
-                            self.rect.y + (self.rect.height - text.get_height()) // 2))
-        
+            screen.blit(text, (
+                self.hover_rect.x + (self.hover_rect.width - text.get_width()) // 2,
+                self.hover_rect.y + (self.hover_rect.height - text.get_height()) // 2
+            ))
+            return
+
+        # --- NORMAL STATE ---
+        pygame.draw.rect(screen, self.button_color, self.rect, border_radius=7)
+        text = self.button_font.render(self.text, True, self.text_color)
+        screen.blit(text, (
+            self.rect.x + (self.rect.width - text.get_width()) // 2,
+            self.rect.y + (self.rect.height - text.get_height()) // 2
+        ))
+
     def is_clicked(self, event):
+        mx, my = pygame.mouse.get_pos()
+
         if event.type == pygame.MOUSEBUTTONDOWN:
-            mx, my = pygame.mouse.get_pos()
-            if self.x <= mx <= self.x + self.w and self.y <= my <= self.y + self.h:
-                return True
-            else:
-                return False
+            if self.rect.collidepoint(mx, my):
+                self.pressed = True
+
+        if event.type == pygame.MOUSEBUTTONUP:
+            if self.pressed:
+                self.pressed = False
+                if self.rect.collidepoint(mx, my):
+                    return True  # Click confirmed
+
+        return False
 
 class Slider:
     def __init__(self, x, y, w, h, min_val, max_val, start_val, color=(200,200,200)):
@@ -218,7 +241,7 @@ pending_spawn_rate = spawn_rate
 # Buttons
 yes_button = Button(width//2 - 150, height//2 + 10, 120, 50, text="Ja", button_color=(255, 0, 0))
 no_button = Button(width//2 + 30, height//2 + 10, 120, 50, text="Nein")
-reset_button = Button(width//2 - 110, height//2 - 110, 150, 40, text="Reset", button_color=(255, 150, 0))
+reset_button = Button(width//2 - 110, height//2 - 110, 150, 40, text="Reset", button_color=(255, 110, 0))
 
 # Slider
 slider_cell_size = Slider(width//2 - 185, height//2 - 195, 300, 10, 5, 50, cell_size)

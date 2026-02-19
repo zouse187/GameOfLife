@@ -1,20 +1,13 @@
 class Button:
     def __init__(self, x, y, w, h, hover=True, button_color=(55, 55, 55), text="Button", text_color=(255, 255, 255), hover_effect=1):
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
         self.rect = pygame.Rect(x, y, w, h)
         self.hover_rect = pygame.Rect(x-hover_effect, y-hover_effect, w+hover_effect*2, h+hover_effect*2)
-        self.clicked_rect = pygame.Rect(x+hover_effect, y+hover_effect, w-hover_effect*2, h-hover_effect*2)
         self.hover = hover
         self.button_color = button_color
         self.text = text
         self.text_color = text_color
-        self.hover_effect = hover_effect
         self.button_font = pygame.font.SysFont(None, round((w+h)//4))
         self.button_font_hover = pygame.font.SysFont(None, round(((w+h)//4)+hover_effect))
-        self.button_font_clicked = pygame.font.SysFont(None, round(((w+h)//4)-hover_effect))
         self.hover_color = tuple(min(x + 80, 255) for x in self.button_color)
         self.clicked_color = tuple(min(x + 80 - 30, 255) for x in self.button_color)
         self.pressed = False
